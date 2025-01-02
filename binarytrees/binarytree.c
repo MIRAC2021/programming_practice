@@ -31,26 +31,24 @@ BinaryTree* createTree() {
 
 //additional function
 void insert_node(Node* node_ptr, int data){
-    printf("insert node function has been summoned\n");
     struct Node* n = (Node*)malloc(sizeof(struct Node));
     n->data = data;
     n->left = NULL;
     n->right = NULL;
 
     if(node_ptr->data < data){
-        printf("left\n");
-        if(node_ptr->right == NULL){
-            printf("left is null\n");
-            node_ptr->right = n;
+        if(node_ptr->right != NULL){
+            insert_node(node_ptr->right, data);
+            free(node_ptr);
         }
         else{
-            insert_node(node_ptr->right, data);
+            node_ptr->right = n;
         }
     }
     else if(node_ptr->data >= data){
-        printf("right\n");
         if(node_ptr->left != NULL){
             insert_node(node_ptr->left, data);
+            free(node_ptr);
         }
         else{
             node_ptr->left = n;
@@ -80,46 +78,12 @@ int insert(BinaryTree *tree, int data) {
         return 0;
     }
     else {
-        printf("Reached the else statement\n");
         struct Node* node_ptr = tree->root;
-        printf("created a node pointer pointing to root\n");
-        printf("The value of data at node_ptr is %d\n", node_ptr->data);
         insert_node(node_ptr, data);
-        printf("inserted node\n");
         return 1;
-    }
-    
+    } 
 }
 
-Node* check_branch(BinaryTree *t, Node* n, int d){ //if a function returns a pointer to something on stack, then it's a bad idea
-    n = t->root;
-    if(d < t->root->data){
-        t->root = t->root->left;
-    }
-    else if(d > t->root->data){
-        t->root = t->root->right;
-    }
-    
-    return t->root;
-}
-
-int insert_better(BinaryTree *tree, int data) {
-
-    if (tree == NULL) return -1;
-    //if (data == NULL) return -1; // This would prevent data == 0 to enter into the system
-
-    if (tree->root == NULL){
-        struct Node* n = (Node*)malloc(sizeof(struct Node));
-        tree->root = n;
-        return 0;
-    }
-    else {
-        struct Node* node_ptr = tree->root;
-        check_branch(tree, node_ptr, data);
-        return 0;
-    } // compare data to left and right nodes.
-    
-}
 
 /**
  *  @brief Retrieves the value from the binary tree.
@@ -128,8 +92,79 @@ int insert_better(BinaryTree *tree, int data) {
  *  @param out_value Pointer to the variable to store the retrieved value.
  *  @return 0 if the retrieval is successful, -1 if the tree is NULL.
  */
-int get(BinaryTree *tree, int* out_value) {
+// int get(BinaryTree *tree, int* out_value) {
+//     if (tree == NULL) return -1;
+//     if (tree->root == NULL) return -1;
 
+//     struct Node* n = (Node*)malloc(sizeof(struct Node));
+//     n = tree->root;
+
+//     if(n->data < out_value){
+//         if(n->right != NULL){
+//             insert_node(tree->root->right, out_value);
+//         }
+//         else{
+//             tree->root->right = n;
+//         }
+//     }
+//     else if(tree->root->data >= out_value){
+//         if(tree->root->left != NULL){
+//             insert_node(tree->root->left, out_value);
+//         }
+//         else{
+//             tree->root->left = n;
+//         }
+//     }
+//     else printf("check insert node function\n");
+
+// }
+
+int check_for_val(BinaryTree * tree, Node * node_ptr, int out_value){
+
+    if(node_ptr->data < out_value){
+        if(node_ptr->right != NULL){
+            if(node_ptr->right->data == out_value){
+                return out_value;
+            }
+            else{
+                try_get(tree->root->right, out_value);
+            }
+        }
+        else{
+            printf("out value does not exist in right\n");
+            return 0;
+        }
+    }
+    else if(tree->root->data >= out_value){
+        if(tree->root->left != NULL){
+            if(node_ptr->left->data == out_value){
+                return out_value;
+            }
+            else{
+                try_get(tree->root->left, out_value);
+            }
+        }
+        else{
+            printf("out value does not exist in left\n");
+            return 0;
+        }
+    }
+    else printf("check try_get function\n");
+        return NULL;
+}
+
+int try_get(BinaryTree *tree, int out_value) {
+    if (tree == NULL) return -1;
+    if (tree->root == NULL) return -1;
+
+    if (tree->root->data == out_value){
+        return out_value;
+    }
+    else{
+        struct Node* n = (Node*)malloc(sizeof(struct Node));
+        n = tree->root;
+        check_for_val(tree,n, out_value);
+    }
 }
 
 int delete(BinaryTree *tree, int value) {
