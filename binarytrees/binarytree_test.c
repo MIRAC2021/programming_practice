@@ -53,34 +53,32 @@ void should_insert_node_to_right(){
 }
 
 // get function
-// void should_return_neg_one_for_tree_doesnt_exist(){
-//     BinaryTree* tree = NULL;
-//     int val = 10;
-//     int *data = &val;
-//     if(get(tree, data) == -1){
-//         printf("success part 6\n");
-//     }
-//     else printf("check get for get -1 for tree equals NULL\n");
-// }
+void should_return_neg_one_for_tree_doesnt_exist(){
+    BinaryTree* tree = NULL;
+    int val = 10;
+    int *data = &val;
+    if(get(tree, data) == -1){
+        printf("success part 6\n");
+    }
+    else printf("check get for get -1 for tree equals NULL\n");
+}
 
-// void should_get_neg_one_for_root_is_null(){
-//     BinaryTree* tree = createTree();
-//     int val = 10;
-//     int *data = &val;
-//     if(get(tree, data) == -1){
-//         printf("success part 7\n");
-//     }
-//     else printf("check get for get -1 for root equals NULL\n");
-// }
+void should_get_neg_one_for_root_is_null(){
+    BinaryTree* tree = createTree();
+    int val = 10;
+    int *data = &val;
+    if(get(tree, data) == 0){
+        printf("success part 7\n");
+    }
+    else printf("check get for get -1 for root equals NULL\n");
+}
 
-
-// try_get function
 void should_return_out_value_for_try_get_at_root(){
     BinaryTree* tree = createTree();
     int val = 10;
+    int *data = &val;
     insert(tree, 10);
-    // printf("root: %d\n", tree->root->data);
-    if(try_get(tree, val) == 10){
+    if(get(tree, data) == 10){
         printf("success part 8\n");
     }
     else printf("check try_get for returning out value\n");
@@ -88,20 +86,27 @@ void should_return_out_value_for_try_get_at_root(){
 
 void should_return_out_value_for_try_get_at_left(){
     BinaryTree* tree = createTree();
-    int val = 10;
+    int val = 5;
+    int *data = &val;
     insert(tree, 10);
-    insert(tree, -1);
-    //printf("left: %d\n", tree->root->left->data);
-    printf("result: %d\n", try_get(tree, -1));
-    if(try_get(tree, -1) == -1){
+    insert(tree, 5);
+    if(get(tree, data) == 5){
         printf("success part 9\n");
     }
     else printf("check try_get for returning out value\n");
 }
 
-// void should_return_out_value_for_try_get_at_right(){
-
-// }
+void should_return_out_value_for_try_get_at_right(){
+    BinaryTree* tree = createTree();
+    int val = 15;
+    int *data = &val;
+    insert(tree, 10);
+    insert(tree, val);
+    if(get(tree, data) == 15){
+        printf("success part 10\n");
+    }
+    else printf("check try_get for returning out value\n");
+}
 
 int main(){
 
@@ -110,10 +115,11 @@ int main(){
     insert_root_and_return_zero();
     should_insert_node_to_left();
     should_insert_node_to_right();
-    //should_return_neg_one_for_tree_doesnt_exist();
-    //should_get_neg_one_for_root_is_null();
+    should_return_neg_one_for_tree_doesnt_exist();
+    should_get_neg_one_for_root_is_null();
     should_return_out_value_for_try_get_at_root();
     should_return_out_value_for_try_get_at_left();
+    should_return_out_value_for_try_get_at_right();
 
     return EXIT_SUCCESS;
 }
